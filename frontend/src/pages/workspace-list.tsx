@@ -20,7 +20,7 @@ const WorkspaceList = () => {
       <Link to="/workspace/add" className="float-end btn btn-success">Create a workspace</Link>
       <h1 className="mb-5">Workspaces</h1>
       <div>
-        {workspaces?.map((w) => <WorkspaceItem item={w} />)}
+        {workspaces?.map((w) => <WorkspaceItem item={w} key={w.id} />)}
       </div>
     </>
   )

@@ -24,17 +24,16 @@ const TerminalView = () => {
 			console.log(response.data.task_id);
 			setTaskID(response.data.task_id);
 		})
-	})
+	}, [containerID]);
 
 	React.useEffect(() => {
-		socket = new WebSocket(`wss://${window.location.host}/ws/${taskID}`);
 
-		if (termRef.current) {
+		if (termRef.current && taskID) {
+      socket = new WebSocket(`wss://${window.location.host}/ws/${taskID}`);
 			term.open(termRef.current);
 			term.onData(function (data) {
 				if (socket) {
 				socket.send(data);
-				console.log(socket)
 				}
 			});
 
