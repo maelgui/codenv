@@ -12,7 +12,7 @@ RUN go mod download
 
 COPY api .
 
-RUN go build -o /codenv-api
+RUN go build -o out/codenv-api
 
 ##
 ## Build Frontend
@@ -39,9 +39,9 @@ FROM gcr.io/distroless/base-debian10
 
 WORKDIR /
 
-COPY --from=build-api /codenv-api /codenv-api
-COPY --from=build-frontend /app/build /static
+COPY --from=build-api /app/out/codenv-api /app/codenv-api
+COPY --from=build-frontend /app/build /app/static
 
 EXPOSE 8080
 
-CMD ["/codenv-api"]
+CMD ["/app/codenv-api"]

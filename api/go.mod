@@ -12,6 +12,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.8 // indirect
 	github.com/tv42/httpunix v0.0.0-20191220191345-2ba4b9c3382c // indirect
 	google.golang.org/grpc v1.40.0 // indirect
+	gorm.io/driver/postgres v1.1.0
 	gorm.io/driver/sqlite v1.1.4 // indirect
 	gorm.io/gorm v1.21.13 // indirect
 )
