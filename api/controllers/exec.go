@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-func Terminal(c *gin.Context) {
+func OpenTerminal(c *gin.Context) {
 	var workspace models.Workspace
 
 	if err := models.DB.Where("id = ?", c.Param("id")).First(&workspace).Error; err != nil {
@@ -19,7 +19,13 @@ func Terminal(c *gin.Context) {
 		return
 	}
 
-	containerConn := docker.ExecContainer(workspace.ContainerID)
+	taskID := docker.OpenTerminal(workspace.ContainerID)
+
+	c.JSON(http.StatusOK, gin.H{"task_id": taskID})
+}
+
+func AttachTerminal(c *gin.Context) {
+	containerConn := docker.AttachExec(c.Param("taskID"))
 
 	wshandler(c.Writer, c.Request, containerConn)
 }

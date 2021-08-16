@@ -30,7 +30,12 @@ func main() {
 		api.GET("/workspaces/:id/stop", controllers.StopContainer)
 		api.GET("/workspaces/:id/start", controllers.StartContainer)
 		api.GET("/workspaces/:id/restart", controllers.RestartContainer)
-		api.GET("/workspaces/:id/exec", controllers.Terminal)
+		api.GET("/workspaces/:id/exec", controllers.OpenTerminal)
+	}
+
+	ws := r.Group("/ws")
+	{
+		ws.GET("/:taskID", controllers.AttachTerminal)
 	}
 
 	r.Run()

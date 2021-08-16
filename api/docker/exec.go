@@ -4,7 +4,7 @@ import (
 	"github.com/docker/docker/api/types"
 )
 
-func ExecContainer(containerID string) types.HijackedResponse {
+func OpenTerminal(containerID string) string {
 	config := types.ExecConfig{
 		Cmd:          []string{"bash"},
 		AttachStdin:  true,
@@ -19,7 +19,12 @@ func ExecContainer(containerID string) types.HijackedResponse {
 		panic(err)
 	}
 
-	res2, err := Client.ContainerExecAttach(ctx, res.ID, types.ExecStartCheck{
+	return res.ID
+}
+
+func AttachExec(execID string) types.HijackedResponse {
+
+	res2, err := Client.ContainerExecAttach(ctx, execID, types.ExecStartCheck{
 		Detach: false,
 		Tty:    false,
 	})
