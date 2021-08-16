@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ type BaseModel struct {
 var DB *gorm.DB
 
 func ConnectDataBase() {
-	database, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_CONF")), &gorm.Config{})
+	database, err := gorm.Open(mysql.Open(os.Getenv("DATABASE_CONF")), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
