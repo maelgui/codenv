@@ -37,7 +37,7 @@ RUN yarn build
 
 FROM gcr.io/distroless/base-debian10
 
-WORKDIR /
+WORKDIR /app
 
 COPY --from=build-api /app/out/codenv-api /app/codenv-api
 COPY --from=build-frontend /app/build /app/static
