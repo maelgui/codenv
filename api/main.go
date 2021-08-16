@@ -6,6 +6,7 @@ import (
 	"codenv-api/middlewares"
 	"codenv-api/models"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,12 @@ func main() {
 	docker.ConnectDocker()
 
 	r := gin.Default()
+
+	r.Use(static.Serve("/", static.LocalFile("./static", true)))
+
 	r.Use(middlewares.ReverseProxyMiddleware())
+	r.Any("/proxy/:id/:port/*path", controllers.Proxy)
+
 	api := r.Group("/api")
 	{
 		api.GET("/workspaces", controllers.ListWorkspace)
@@ -26,8 +32,6 @@ func main() {
 		api.GET("/workspaces/:id/restart", controllers.RestartContainer)
 		api.GET("/workspaces/:id/exec", controllers.Terminal)
 	}
-
-	r.Any("/proxy/:id/:port/*path", controllers.Proxy)
 
 	r.Run()
 }

@@ -16,7 +16,7 @@ const TerminalView = () => {
 	let socket: WebSocket | null = null
 
 	React.useEffect(() => {
-		socket = new WebSocket(`ws://localhost:8080/api/workspaces/${id}/exec`);
+		socket = new WebSocket(`wss://${window.location.host}/api/workspaces/${id}/exec`);
 
 		if (termRef.current) {
 			console.log("connect");

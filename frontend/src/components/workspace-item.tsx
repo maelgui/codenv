@@ -66,7 +66,7 @@ const WorkspaceItem = ({ item }: WorkspaceItemProps) => {
         <span className="text-secondary">{ item.image }</span>
       </div>
       <div>
-        <a href={`http://localhost:8080/proxy/${item.id}/8080/`}>Code-server</a>
+        <a href={`/proxy/${item.id}/8080/`}>Code-server</a>
       </div>
       <div className="actions ms-auto">
         {action(item.status)}
