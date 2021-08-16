@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Terminal } from 'xterm';
@@ -10,16 +11,25 @@ type TerminalViewParams = {
 }
 
 const TerminalView = () => {
-	const { id } = useParams<TerminalViewParams>();
+	const { id: containerID } = useParams<TerminalViewParams>();
+
+	const [taskID, setTaskID] = React.useState<string>();
+
 	const termRef = React.createRef<HTMLDivElement>();
 	const term = new Terminal();
 	let socket: WebSocket | null = null
 
 	React.useEffect(() => {
-		socket = new WebSocket(`wss://${window.location.host}/api/workspaces/${id}/exec`);
+		axios.get(`/api/workspaces/${containerID}/exec`).then((response) => {
+			console.log(response.data.task_id);
+			setTaskID(response.data.task_id);
+		})
+	})
+
+	React.useEffect(() => {
+		socket = new WebSocket(`wss://${window.location.host}/ws/${taskID}`);
 
 		if (termRef.current) {
-			console.log("connect");
 			term.open(termRef.current);
 			term.onData(function (data) {
 				if (socket) {
@@ -32,7 +42,7 @@ const TerminalView = () => {
 				term.write(e.data);
 			}
 		}
-	}, []);
+	}, [taskID]);
 
 	return (
 		<div ref={termRef}></div>
