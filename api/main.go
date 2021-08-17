@@ -16,9 +16,9 @@ func main() {
 
 	r := gin.Default()
 
+	r.Use(middlewares.ReverseProxyMiddleware())
 	r.Use(static.Serve("/", static.LocalFile("./static", true)))
 
-	r.Use(middlewares.ReverseProxyMiddleware())
 	r.Any("/proxy/:id/:port/*path", controllers.Proxy)
 
 	api := r.Group("/api")
