@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -14,6 +15,11 @@ type BaseModel struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }
 
+func (e *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
+	e.ID = uuid.NewString()
+	return
+}
+
 var DB *gorm.DB
 
 func ConnectDataBase() {
@@ -23,7 +29,7 @@ func ConnectDataBase() {
 		panic("Failed to connect to database!")
 	}
 
-	database.AutoMigrate(&Workspace{})
+	database.AutoMigrate(&Workspace{}, &Proxy{})
 
 	DB = database
 }

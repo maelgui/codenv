@@ -35,7 +35,7 @@ RUN yarn build
 ## Deploy
 ##
 
-FROM debian:buster
+FROM gcr.io/distroless/base-debian10
 
 WORKDIR /app
 

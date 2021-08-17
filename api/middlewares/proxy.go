@@ -15,7 +15,6 @@ import (
 
 func ReverseProxyMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println(c.Request.Host)
 		proxy := regexp.MustCompile(`^(\d{4,5})-(\w{8}(?:-\w{4}){3}-\w{12})\.env.maelgui.fr$`)
 		matches := proxy.FindStringSubmatch(c.Request.Host)
 

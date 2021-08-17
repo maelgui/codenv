@@ -1,0 +1,23 @@
+version: "3.4"
+
+services: 
+  codenv:
+    build: .
+    image: ghcr.io/maelgui/codenv:latest
+    restart: unless-stopped
+    networks:
+      - codenv_network
+    volumes:
+      - database:/app/db
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_NETWORK=codenv_network
+    ports:
+      - 8080:8080
+
+
+volumes:
+  database:
+networks:
+  codenv_network:
+    external: true

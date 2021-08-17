@@ -5,6 +5,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/network"
 )
 
 func CreateContainer(workspace models.Workspace) {
@@ -13,13 +14,17 @@ func CreateContainer(workspace models.Workspace) {
 		panic(err)
 	}
 
+	endpointsConfig := map[string]*network.EndpointSettings{
+		"codenv_network": &network.EndpointSettings{},
+	}
+
 	resp, err := Client.ContainerCreate(ctx, &container.Config{
 		Image: workspace.Image,
 		Cmd:   []string{"echo", "hello world"},
 		Volumes: map[string]struct{}{
 			"/home": struct{}{},
 		},
-	}, nil, nil, nil, "")
+	}, nil, &network.NetworkingConfig{EndpointsConfig: endpointsConfig}, nil, "")
 	if err != nil {
 		panic(err)
 	}

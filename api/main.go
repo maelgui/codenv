@@ -31,6 +31,9 @@ func main() {
 		api.GET("/workspaces/:id/start", controllers.StartContainer)
 		api.GET("/workspaces/:id/restart", controllers.RestartContainer)
 		api.GET("/workspaces/:id/exec", controllers.OpenTerminal)
+
+		api.POST("/proxies", controllers.CreateProxy)
+
 	}
 
 	ws := r.Group("/ws")

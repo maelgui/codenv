@@ -29,7 +29,7 @@ const TerminalView = () => {
 	React.useEffect(() => {
 
 		if (termRef.current && taskID) {
-      socket = new WebSocket(`wss://${window.location.host}/ws/${taskID}`);
+      socket = new WebSocket(`ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws/${taskID}`);
 			term.open(termRef.current);
 			term.onData(function (data) {
 				if (socket) {

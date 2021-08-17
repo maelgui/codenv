@@ -12,7 +12,7 @@ import (
 func ListWorkspace(c *gin.Context) {
 	var workspaces []models.Workspace
 
-	models.DB.Find(&workspaces)
+	models.DB.Preload("Proxies").Find(&workspaces)
 
 	var responses []schema.ResponseWorkspace
 
