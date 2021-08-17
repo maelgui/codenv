@@ -3,15 +3,21 @@ package models
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 type BaseModel struct {
-	ID        uint           `json:"id" gorm:"primaryKey"`
+	ID        string         `json:"id" gorm:"primaryKey"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+}
+
+func (e *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
+	e.ID = uuid.NewString()
+	return
 }
 
 var DB *gorm.DB
