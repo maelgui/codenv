@@ -17,7 +17,7 @@ type BaseModel struct {
 var DB *gorm.DB
 
 func ConnectDataBase() {
-	database, err := gorm.Open(sqlite.Open("/db/db.sqlite"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open("db/db.sqlite"), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
