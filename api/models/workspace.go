@@ -7,8 +7,7 @@ type Workspace struct {
 	Image       string `json:"image"`
 }
 
-const (
-	StatusPending = "PENDING"
-	StatusRunning = "RUNNING"
-	StatusStopped = "STOPPED"
-)
+func (e *Workspace) BeforeCreate(tx *gorm.DB) (err error) {
+	e.ID = uuid.NewString()
+	return
+}
