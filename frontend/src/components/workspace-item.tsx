@@ -29,17 +29,17 @@ const WorkspaceItem = ({ item }: WorkspaceItemProps) => {
     } else if (status === 'running') {
       return (
         <>
-          <a href="#" className="text-secondary fs-3" onClick={stopWorkspace}>
+          <a href="#" className="text-secondary fs-3 mx-2" onClick={stopWorkspace}>
             <BsStop />
           </a>
-          <a href="#" className="text-secondary fs-3" onClick={restartWorkspace}>
+          <a href="#" className="text-secondary fs-3 mx-2" onClick={restartWorkspace}>
             <BsArrowClockwise />
           </a>
         </>
       );
     } else if (status === 'exited') {
       return (
-        <a href="#" className="text-secondary fs-3" onClick={startWorkspace}>
+        <a href="#" className="text-secondary fs-3 mx-2" onClick={startWorkspace}>
           <BsPlay />
         </a>
       );
@@ -69,10 +69,10 @@ const WorkspaceItem = ({ item }: WorkspaceItemProps) => {
         </div>
         <div className="actions ms-auto">
           {action(item.status)}
-          {item.status === 'running' && <Link to={`/workspace/${item.id}/terminal`} className="text-secondary fs-3">
+          {item.status === 'running' && <Link to={`/workspace/${item.id}/terminal`} className="text-secondary fs-3 mx-2">
             <BsTerminal />
           </Link>}
-          <a href="#" className="text-secondary fs-3" onClick={deleteWorkspace}>
+          <a href="#" className="text-secondary fs-3 mx-2" onClick={deleteWorkspace}>
             <BsTrash />
           </a>
         </div>
