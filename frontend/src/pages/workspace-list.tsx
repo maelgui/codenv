@@ -9,10 +9,10 @@ import { Link } from 'react-router-dom';
 const WorkspaceList = () => {
   const [workspaces, setWorkspaces] = React.useState<Array<IWorkspace>>();
 
+  const refetch = () => axios.get('/api/workspaces').then((response) => { setWorkspaces(response.data); });
+
   React.useEffect(() => {
-    axios.get('/api/workspaces').then((response) => {
-      setWorkspaces(response.data);
-    })
+    refetch();
   }, []);
 
   return (
@@ -20,7 +20,7 @@ const WorkspaceList = () => {
       <Link to="/workspace/add" className="float-end btn btn-success">Create a workspace</Link>
       <h1 className="mb-5">Workspaces</h1>
       <div>
-        {workspaces?.map((w) => <WorkspaceItem item={w} key={w.id} />)}
+        {workspaces?.map((w) => <WorkspaceItem item={w} key={w.id} refetch={refetch} />)}
       </div>
     </>
   )

@@ -2,15 +2,17 @@ import React from "react";
 import { IWorkspace } from "../types/workspace";
 import { BsArrowClockwise, BsStop, BsPlay, BsTrash, BsTerminal } from 'react-icons/bs';
 import axios from "axios";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import styles from './workspace-item.module.css';
 
 type WorkspaceItemProps = {
-    item: IWorkspace;
+  item: IWorkspace;
+  refetch: Function;
 }
 
-const WorkspaceItem = ({ item }: WorkspaceItemProps) => {
+const WorkspaceItem = ({ item, refetch }: WorkspaceItemProps) => {
 
   const color = (status: string) => {
     if (status === 'PENDING') {
@@ -47,16 +49,36 @@ const WorkspaceItem = ({ item }: WorkspaceItemProps) => {
   }
   
   const deleteWorkspace = () => {
-    axios.delete(`/api/workspaces/${item.id}`)
+    const myPromise = axios.delete(`/api/workspaces/${item.id}`).then(refetch);
+    toast.promise(myPromise, {
+      loading: 'Deleting workspace...',
+      success: 'Success!',
+      error: 'Error when deleting workspace.',
+    });
   }
   const startWorkspace = () => {
-    axios.get(`/api/workspaces/${item.id}/start`)
+    const myPromise = axios.get(`/api/workspaces/${item.id}/start`).then(refetch);
+    toast.promise(myPromise, {
+      loading: 'Starting workspace...',
+      success: 'Success!',
+      error: 'Error when starting workspace.',
+    });
   }
   const stopWorkspace = () => {
-    axios.get(`/api/workspaces/${item.id}/stop`)
+    const myPromise = axios.get(`/api/workspaces/${item.id}/stop`).then(refetch);
+    toast.promise(myPromise, {
+      loading: 'Stopping workspace...',
+      success: 'Success!',
+      error: 'Error when stopping workspace.',
+    });
   }
   const restartWorkspace = () => {
-    axios.get(`/api/workspaces/${item.id}/restart`)
+    const myPromise = axios.get(`/api/workspaces/${item.id}/restart`).then(refetch);
+    toast.promise(myPromise, {
+      loading: 'Restarting workspace...',
+      success: 'Success!',
+      error: 'Error when restarting workspace.',
+    });
   }
   
   return (
