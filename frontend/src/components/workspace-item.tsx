@@ -9,7 +9,7 @@ import styles from './workspace-item.module.css';
 
 type WorkspaceItemProps = {
   item: IWorkspace;
-  refetch: Function;
+  refetch: () => Promise<any>;
 }
 
 const WorkspaceItem = ({ item, refetch }: WorkspaceItemProps) => {
