@@ -51,6 +51,7 @@ func CreateWorkspace(c *gin.Context) {
 		Image: input.Image,
 	}
 	models.DB.Create(&workspace)
+	models.DB.Commit()
 
 	c.JSON(http.StatusOK, workspace)
 
