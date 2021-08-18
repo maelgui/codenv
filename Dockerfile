@@ -1,5 +1,6 @@
 # syntax = docker/dockerfile:1.3
 
+
 ##
 ## Build API
 ##
@@ -15,6 +16,7 @@ RUN go mod download
 COPY api .
 
 RUN --mount=type=cache,target=/root/.cache/go-build go build -o out/codenv-api
+
 
 ##
 ## Build Frontend
@@ -32,6 +34,7 @@ RUN  --mount=type=cache,target=/root/.cache yarn install
 COPY frontend .
 
 RUN  --mount=type=cache,target=/root/.cache yarn build
+
 
 ##
 ## Deploy
