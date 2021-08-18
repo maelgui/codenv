@@ -14,7 +14,7 @@ RUN go mod download
 
 COPY api .
 
-RUN go build -o out/codenv-api
+RUN --mount=type=cache,target=/root/.cache/go-build go build -o out/codenv-api
 
 ##
 ## Build Frontend
