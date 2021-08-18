@@ -22,6 +22,7 @@ func ReverseProxyMiddleware() gin.HandlerFunc {
 		remote, err := controllers.GetProxyRemote(matches[2], matches[1])
 		if err != nil {
 			c.JSON(http.StatusForbidden, gin.H{"error": "Proxy access forbidden"})
+			c.Abort()
 			return
 		}
 
