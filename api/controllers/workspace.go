@@ -51,12 +51,9 @@ func CreateWorkspace(c *gin.Context) {
 		Name:  input.Name,
 		Image: input.Image,
 	}
-	
-	models.DB.Transaction(func(tx *gorm.DB) error {
-		tx.Create(&workspace)
-		return nil
-	})
-	
+
+	tx := models.DB.Session(&gorm.Session{SkipDefaultTransaction: true})
+	tx.Create(&workspace)
 
 	c.JSON(http.StatusOK, workspace)
 
