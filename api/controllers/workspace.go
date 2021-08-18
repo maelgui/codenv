@@ -50,7 +50,12 @@ func CreateWorkspace(c *gin.Context) {
 		Name:  input.Name,
 		Image: input.Image,
 	}
-	models.DB.Create(&workspace)
+	
+	models.DB.Transaction(func(tx *gorm.DB) error {
+		tx.Create(&workspace)
+		return nil
+	})
+	
 
 	c.JSON(http.StatusOK, workspace)
 
