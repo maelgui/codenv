@@ -1,15 +1,13 @@
 package docker
 
 import (
-	"codenv-api/models"
-
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/network"
 )
 
-func CreateContainer(workspace models.Workspace) {
-	_, err := Client.ImagePull(ctx, workspace.Image, types.ImagePullOptions{})
+func CreateContainer(image string) string {
+	_, err := Client.ImagePull(ctx, image, types.ImagePullOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -19,7 +17,7 @@ func CreateContainer(workspace models.Workspace) {
 	}
 
 	resp, err := Client.ContainerCreate(ctx, &container.Config{
-		Image: workspace.Image,
+		Image: image,
 		Cmd:   []string{"echo", "hello world"},
 		Volumes: map[string]struct{}{
 			"/home": struct{}{},
@@ -29,12 +27,7 @@ func CreateContainer(workspace models.Workspace) {
 		panic(err)
 	}
 
-	if err := Client.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		panic(err)
-	}
-
-	workspace.ContainerID = resp.ID
-	models.DB.Save(workspace)
+	return resp.ID
 }
 
 func DeleteContainer(containerID string) {

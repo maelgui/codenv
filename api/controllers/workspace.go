@@ -56,8 +56,6 @@ func CreateWorkspace(c *gin.Context) {
 	tx.Create(&workspace)
 
 	c.JSON(http.StatusOK, workspace)
-
-	go docker.CreateContainer(workspace)
 }
 
 func DeleteWorkspace(c *gin.Context) {

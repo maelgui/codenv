@@ -16,7 +16,16 @@ func StartContainer(c *gin.Context) {
 		return
 	}
 
-	go docker.StartContainer(workspace.ContainerID)
+	go func(w *models.Workspace) {
+		if w.ContainerID == "" {
+			containerID := docker.CreateContainer(workspace.Image)
+			w.ContainerID = containerID
+			models.DB.Save(w)
+		}
+		docker.StartContainer(w.ContainerID)
+	}(&workspace)
+
+	c.Status(http.StatusOK)
 }
 
 func RestartContainer(c *gin.Context) {
