@@ -27,11 +27,11 @@ WORKDIR /app
 COPY frontend/package.json .
 COPY frontend/yarn.lock .
 
-RUN yarn install
+RUN  --mount=type=cache,target=/root/.cache yarn install
 
 COPY frontend .
 
-RUN yarn build
+RUN  --mount=type=cache,target=/root/.cache yarn build
 
 ##
 ## Deploy
