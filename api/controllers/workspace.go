@@ -20,8 +20,8 @@ func ListWorkspace(c *gin.Context) {
 		response := schema.ResponseWorkspace{Workspace: w}
 		if w.ContainerID != "" {
 			response.Status = docker.RetrieveContainer(w.ContainerID).State.Status
-			responses = append(responses, response)
 		}
+		responses = append(responses, response)
 	}
 
 	c.JSON(http.StatusOK, responses)
