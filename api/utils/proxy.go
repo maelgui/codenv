@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Proxy(c *gin.Context, remote *url.URL) {
+func Proxy(c *gin.Context, remote *url.URL, path string) {
 	proxy := httputil.NewSingleHostReverseProxy(remote)
 	//Define the director func
 	//This is a good place to log, for example
@@ -17,7 +17,7 @@ func Proxy(c *gin.Context, remote *url.URL) {
 		req.Host = remote.Host
 		req.URL.Scheme = remote.Scheme
 		req.URL.Host = remote.Host
-		req.URL.Path = c.Param("path")
+		req.URL.Path = path
 	}
 
 	proxy.ServeHTTP(c.Writer, c.Request)
