@@ -43,7 +43,7 @@ func Proxy(c *gin.Context) {
 
 func GetProxyRemote(workspaceID string, port string) (*url.URL, error) {
 	var proxy models.Proxy
-	if err := models.DB.Where("port = ?", port).Where("workspace_id = ?", workspaceID).First(&proxy).Error; err != nil {
+	if err := models.DB.Preload("Workspace").Where("port = ?", port).Where("workspace_id = ?", workspaceID).First(&proxy).Error; err != nil {
 		return nil, errors.New("Record not found!")
 	}
 
