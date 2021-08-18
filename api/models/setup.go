@@ -1,10 +1,11 @@
 package models
 
 import (
+	"os"
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +24,7 @@ func (e *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 var DB *gorm.DB
 
 func ConnectDataBase() {
-	database, err := gorm.Open(sqlite.Open("db/db.sqlite"), &gorm.Config{})
+	database, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_DNS")), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
