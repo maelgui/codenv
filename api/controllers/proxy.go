@@ -38,7 +38,7 @@ func Proxy(c *gin.Context) {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Proxy access forbidden"})
 	}
 
-	utils.Proxy(c, remote)
+	utils.Proxy(c, remote, c.Param("path"))
 }
 
 func GetProxyRemote(workspaceID string, port string) (*url.URL, error) {
