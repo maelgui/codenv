@@ -54,6 +54,16 @@ func CreateWorkspace(c *gin.Context) {
 	models.DB.Create(&workspace)
 
 	c.JSON(http.StatusOK, workspace)
+
+	go func(w *models.Workspace) {
+		// Create container
+		containerID := docker.CreateContainer(w.Image)
+		// Save container ID
+		w.ContainerID = containerID
+		models.DB.Save(w)
+		// Start container
+		docker.StartContainer(w.ContainerID)
+	}(&workspace)
 }
 
 func DeleteWorkspace(c *gin.Context) {
