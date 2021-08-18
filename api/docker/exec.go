@@ -12,6 +12,7 @@ func OpenTerminal(containerID string) string {
 		AttachStdout: true,
 		Tty:          true,
 		Detach:       false,
+		Env: []string{"TERM=xterm-256color"},
 	}
 	res, err := Client.ContainerExecCreate(ctx, containerID, config)
 	if err != nil {
