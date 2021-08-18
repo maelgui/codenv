@@ -26,7 +26,7 @@ func ReverseProxyMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		utils.Proxy(c, remote)
+		utils.Proxy(c, remote, c.Request.URL.Path)
 
 		c.Abort()
 	}
