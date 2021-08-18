@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 func ListWorkspace(c *gin.Context) {
@@ -52,8 +51,7 @@ func CreateWorkspace(c *gin.Context) {
 		Image: input.Image,
 	}
 
-	tx := models.DB.Session(&gorm.Session{SkipDefaultTransaction: true})
-	tx.Create(&workspace)
+	models.DB.Create(&workspace)
 
 	c.JSON(http.StatusOK, workspace)
 }
