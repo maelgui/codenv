@@ -99,7 +99,7 @@ const WorkspaceItem = ({ item, refetch }: WorkspaceItemProps) => {
           </a>
         </div>
       </div>
-      {item.proxies.length !== 0 && (
+      {item.proxies.length !== 0 && item.status === "running" && (
         <>
           <hr />
           <div className="d-flex">
