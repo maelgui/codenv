@@ -4,9 +4,11 @@ import (
 	"codenv-api/docker"
 	"codenv-api/models"
 	"codenv-api/schema"
+	"codenv-api/utils"
+	"errors"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,38 +32,25 @@ func CreateProxy(c *gin.Context) {
 }
 
 func Proxy(c *gin.Context) {
-	var workspace models.Workspace
 
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&workspace).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Record not found!"})
-		return
-	}
-
-	containerInfo := docker.RetrieveContainer(workspace.ContainerID)
-	ip := containerInfo.NetworkSettings.Networks["codenv_network"].IPAddress
-
-	// if err := models.DB.Where("id = ?", c.Param("id")).First(&workspace).Error; err != nil {
-	// 	c.JSON(http.StatusNotFound, gin.H{"error": "Record not found!"})
-	// 	return
-	// }
-
-	port := c.Param("port")
-
-	remote, err := url.Parse("http://" + ip + ":" + port)
+	remote, err := GetProxyRemote(c.Param("id"), c.Param("id"))
 	if err != nil {
-		panic(err)
+		c.JSON(http.StatusForbidden, gin.H{"error": "Proxy access forbidden"})
 	}
 
-	proxy := httputil.NewSingleHostReverseProxy(remote)
-	//Define the director func
-	//This is a good place to log, for example
-	proxy.Director = func(req *http.Request) {
-		req.Header = c.Request.Header
-		req.Host = remote.Host
-		req.URL.Scheme = remote.Scheme
-		req.URL.Host = remote.Host
-		req.URL.Path = c.Param("path")
+	utils.Proxy(c, remote)
+}
+
+func GetProxyRemote(workspaceID string, port string) (*url.URL, error) {
+	var proxy models.Proxy
+	if err := models.DB.Where("port = ?", port).Where("workspaceID = ?", workspaceID).First(&proxy).Error; err != nil {
+		return nil, errors.New("Record not found!")
 	}
 
-	proxy.ServeHTTP(c.Writer, c.Request)
+	containerInfo := docker.RetrieveContainer(proxy.Workspace.ContainerID)
+	ip := containerInfo.NetworkSettings.Networks[os.Getenv("DOCKER_NETWORK")].IPAddress
+
+	target_url := "http://" + ip + ":" + port
+
+	return url.Parse(target_url)
 }
