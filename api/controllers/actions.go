@@ -16,7 +16,11 @@ func StartContainer(c *gin.Context) {
 		return
 	}
 
-	go docker.StartContainer(workspace.ContainerID)
+	err := docker.StartContainer(workspace.ContainerID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.Status(http.StatusOK)
 }
@@ -29,7 +33,13 @@ func RestartContainer(c *gin.Context) {
 		return
 	}
 
-	go docker.RestartContainer(workspace.ContainerID)
+	err := docker.RestartContainer(workspace.ContainerID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }
 
 func StopContainer(c *gin.Context) {
@@ -40,5 +50,11 @@ func StopContainer(c *gin.Context) {
 		return
 	}
 
-	go docker.StopContainer(workspace.ContainerID)
+	err := docker.StopContainer(workspace.ContainerID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusOK)
 }

@@ -2,20 +2,14 @@ package docker
 
 import "github.com/docker/docker/api/types"
 
-func StartContainer(containerID string) {
-	if err := Client.ContainerStart(ctx, containerID, types.ContainerStartOptions{}); err != nil {
-		panic(err)
-	}
+func StartContainer(containerID string) error {
+	return Client.ContainerStart(ctx, containerID, types.ContainerStartOptions{})
 }
 
-func RestartContainer(containerID string) {
-	if err := Client.ContainerRestart(ctx, containerID, nil); err != nil {
-		panic(err)
-	}
+func RestartContainer(containerID string) error {
+	return Client.ContainerRestart(ctx, containerID, nil)
 }
 
-func StopContainer(containerID string) {
-	if err := Client.ContainerStop(ctx, containerID, nil); err != nil {
-		panic(err)
-	}
+func StopContainer(containerID string) error {
+	return Client.ContainerStop(ctx, containerID, nil)
 }
