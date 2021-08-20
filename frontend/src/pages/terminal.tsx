@@ -29,6 +29,7 @@ const TerminalView = () => {
 	React.useEffect(() => {
 
 		if (termRef.current && taskID) {
+      console.log("CONNECTING");
       socket = new WebSocket(`ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws/${taskID}`);
 			term.open(termRef.current);
 			term.onData(function (data) {
@@ -41,7 +42,11 @@ const TerminalView = () => {
 				term.write(e.data);
 			}
 		}
+
+    return () => { socket?.close() }
 	}, [taskID]);
+
+	console.log("REDRAW!");
 
 	return (
 		<div ref={termRef}></div>

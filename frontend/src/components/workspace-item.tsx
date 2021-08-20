@@ -1,11 +1,14 @@
 import React from "react";
 import { IWorkspace } from "../types/workspace";
-import { BsArrowClockwise, BsStop, BsPlay, BsTrash, BsTerminal } from 'react-icons/bs';
+import { BsArrowClockwise, BsStop, BsPlay, BsTrash, BsTerminal, BsPlus } from 'react-icons/bs';
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
+import ProxyCreate from "./proxy-create";
+
 import styles from './workspace-item.module.css';
+import { IProxy } from "../types/proxy";
 
 type WorkspaceItemProps = {
   item: IWorkspace;
@@ -80,6 +83,17 @@ const WorkspaceItem = ({ item, refetch }: WorkspaceItemProps) => {
       error: 'Error when restarting workspace.',
     });
   }
+
+  const createProxy = (data: IProxy) => {
+    data.workspace_id = item.id;
+    const myPromise = axios.post(`/api/proxies/`, data).then(refetch);
+    toast.promise(myPromise, {
+      loading: 'Creating Proxy...',
+      success: 'Success!',
+      error: 'Error when creating proxy.',
+    });
+
+  }
   
   return (
     <div className="shadow p-4 mb-3 rounded">
@@ -104,14 +118,30 @@ const WorkspaceItem = ({ item, refetch }: WorkspaceItemProps) => {
           <hr />
           <div className="d-flex">
             {item.proxies.map((proxy) => (
-              <a href={window.location.host === "env.maelgui.fr" ? `//${proxy.port}-${item.id}.env.maelgui.fr` : `/proxy/${item.id}/${proxy.port}/`} className={styles.proxy}>
+              <a key={proxy.id} href={window.location.host === "env.maelgui.fr" ? `//${proxy.port}-${item.id}.env.maelgui.fr` : `/proxy/${item.id}/${proxy.port}/`} className={styles.proxy}>
                 <div className={styles.proxyPort}>:{proxy.port}</div>
                 <div className={styles.proxyName}>{proxy.name}</div>
               </a>
             ))}
+
+            <a href="#" className={styles.proxy} data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div className={styles.proxyPort}><BsPlus /></div>
+              <div className={styles.proxyName}>Add</div>
+            </a>
           </div>
         </>
       )}
+
+      <div className="modal fade" id="exampleModal" tabIndex={-1} aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-body">
+              <ProxyCreate onSubmit={createProxy} />
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

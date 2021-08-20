@@ -10,6 +10,7 @@ import Terminal from './pages/terminal'
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap';
 import WorkspaceCreate from './pages/workspace-create';
 import { Toaster } from 'react-hot-toast';
 
