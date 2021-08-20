@@ -18,7 +18,7 @@ func CreateContainer(image string) string {
 
 	resp, err := Client.ContainerCreate(ctx, &container.Config{
 		Image: image,
-		Cmd:   []string{"echo", "hello world"},
+		Cmd:   []string{"--log", "trace"},
 		Volumes: map[string]struct{}{
 			"/home": struct{}{},
 		},
